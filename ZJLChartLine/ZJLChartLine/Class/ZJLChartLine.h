@@ -34,5 +34,6 @@
 
 - (instancetype)initWithFrame:(CGRect)frame withDataSource:(id<ZJLChartDataSource>)dataSource;
 
+- (void)reloadData;
 
 @end

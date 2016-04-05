@@ -19,7 +19,7 @@
     [super viewDidLoad];
     ZJLChartLine *chartLine = [[ZJLChartLine alloc] initWithFrame:self.view.bounds withDataSource:self];
     [self.view addSubview:chartLine];
-  
+    [chartLine reloadData];
 }
 
 #pragma mark --ZJLChartLineDataSource
