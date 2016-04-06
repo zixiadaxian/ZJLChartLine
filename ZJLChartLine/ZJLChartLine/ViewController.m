@@ -17,7 +17,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    ZJLChartLine *chartLine = [[ZJLChartLine alloc] initWithFrame:self.view.bounds withDataSource:self];
+    ZJLChartLine *chartLine = [[ZJLChartLine alloc] initWithFrame:CGRectMake(0, 0, 320, 300) withDataSource:self];
     [self.view addSubview:chartLine];
     [chartLine reloadData];
 }
@@ -34,7 +34,7 @@
  *  Y 轴最大值
  */
 - (CGFloat)zjlChartLineYMaxValue:(ZJLChartLine *)chart {
-    return 200;
+    return 500;
 }
 /**
  *  X 轴 说明
