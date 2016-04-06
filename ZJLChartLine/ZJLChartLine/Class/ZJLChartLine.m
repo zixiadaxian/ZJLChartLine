@@ -7,10 +7,12 @@
 //
 
 #import "ZJLChartLine.h"
+#import "UIBezierPath+Granularity.h"
+static const CGFloat chart_X_Y_Label                = 50.f; //X Y  label高度
+static const CGFloat chartLine_To_Top_Span          = 30.f; // 距离顶部高度 右边
+static const CGFloat chartLine_To_Line_Span         = 70.0; // X 网格间距
 
-static const CGFloat chart_X_Y_Label    = 50.f; //X Y  label高度
-static const CGFloat chartLine_To_Top_Span      = 30.f; // 距离顶部高度 右边
-static const CGFloat chartLine_To_Line_Span      = 70.0; // X 网格间距
+#define kRandomColor [UIColor colorWithRed:((arc4random() % 255 )/ 255) green:((arc4random() % 255) / 255) blue:((arc4random() % 255) / 255) alpha:1.00f]
 
 @interface ZJLChartLine ()
 
@@ -142,15 +144,92 @@ static const CGFloat chartLine_To_Line_Span      = 70.0; // X 网格间距
         [self.lineView addSubview:label];
     }
 }
+/**
+ *  画线
+ */
+- (void)drawChartLine {
+    
+    for (NSMutableArray *yValues in _yValues) {
+        
+        NSMutableArray *pointX = [NSMutableArray array];
+        NSMutableArray *pointY = [NSMutableArray array];
+        NSMutableArray *points = [NSMutableArray array];
+        
+        //X
+        for (NSInteger i = 0; i < yValues.count; i++) {
+            [pointX addObject:@(chart_X_Y_Label+  chartLine_To_Line_Span*i)];
+        }
+        //Y
+        for (NSInteger i = 0; i < _xLabels.count; i++) {
+            [pointY addObject:@(chartLine_To_Top_Span+ _lineView.frame.size.height -chartLine_To_Top_Span- chart_X_Y_Label - ([yValues[i] floatValue] / _yMax )*(_lineView.frame.size.height -chartLine_To_Top_Span- chart_X_Y_Label))];
+        }
+        //点
+        for (NSInteger i = 0; i <pointX.count ; i++) {
+            CGPoint point = CGPointMake([pointX[i] floatValue], [pointY[i] floatValue]);
+            NSValue * value = [NSValue valueWithCGPoint:point];
+            [points addObject:value];
+        }
+        CAShapeLayer *shapeLayer = [CAShapeLayer layer];
+        shapeLayer.lineCap = kCALineCapRound;
+        shapeLayer.lineJoin = kCALineJoinRound;
+        shapeLayer.lineWidth = 2.f;
+        shapeLayer.fillColor = [UIColor clearColor].CGColor;
+        shapeLayer.strokeEnd = 0.f;
+        shapeLayer.strokeColor = kRandomColor.CGColor;
+        [self.lineView.layer addSublayer:shapeLayer];
+        
+        UIBezierPath * bezierLine = [UIBezierPath bezierPath];
+        for (NSInteger i = 0; i < points.count; i++) {
+            CGPoint point = [points[i] CGPointValue];
+            if (i == 0) {
+                [bezierLine moveToPoint:point];
+            } else {
+                [bezierLine addLineToPoint:point];
+            }
+            [self addXLabel:point andIndex:i text:yValues[i]];
+        }
+        bezierLine =[bezierLine smoothedPathWithGranularity:20];//设置曲线
+        shapeLayer.path = bezierLine.CGPath;
+        
+        CABasicAnimation *pathAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
+        pathAnimation.duration = points.count * 0.5f;
+        pathAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+        pathAnimation.fromValue = [NSNumber numberWithFloat:0.0f];
+        pathAnimation.toValue = [NSNumber numberWithFloat:1.f];
+        pathAnimation.autoreverses = NO;
+        [shapeLayer addAnimation:pathAnimation forKey:@"strokeEndAnimation"];
+        shapeLayer.strokeEnd = 1.f;
+    }
+}
+/**
+ *  刷新
+ */
 - (void)reloadData{
 
     [self add_X_Line];
     [self add_Y_Line];
     [self add_X_Label];
     [self add_Y_Label];
-    
+    [self drawChartLine];
 }
 
-
+//标记x轴label
+- (void)addXLabel:(CGPoint)point andIndex:(NSInteger)index text:(NSString *)text{
+    
+    UIView * view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 10)];
+    view.center = point;
+    view.backgroundColor = [UIColor whiteColor];
+    view.layer.cornerRadius = 5.f;
+    view.layer.masksToBounds = YES;
+    [self.lineView addSubview:view];
+    
+    UILabel * label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 30, 20)];
+    label.center = point;
+    label.textColor = [UIColor lightGrayColor];
+    label.font = [UIFont systemFontOfSize:10.f];
+    label.textAlignment = NSTextAlignmentCenter;
+    label.text = text;
+    [self.lineView addSubview:label];
+}
 
 @end

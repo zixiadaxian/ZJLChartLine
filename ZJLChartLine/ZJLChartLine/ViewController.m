@@ -47,8 +47,8 @@
  */
 - (NSMutableArray *)zjlChartLineYValues:(ZJLChartLine *)chart {
     
-    NSMutableArray *line1 = [NSMutableArray arrayWithObjects:@"0", @"10",@"80",@"160",@"70",@"90",@"0",nil];
-    NSMutableArray *line2 = [NSMutableArray arrayWithObjects:@"0", @"150",@"60",@"70",@"0",@"40",@"20",nil];
-    return [NSMutableArray arrayWithObjects:line1,line2, nil];
+    NSMutableArray *line1 = [NSMutableArray arrayWithObjects:@"0", @"500",@"10",@"500",@"10",@"150",@"10",nil];
+    NSMutableArray *line2 = [NSMutableArray arrayWithObjects:@"0", @"150",@"60",@"70",@"0",@"40",@"0",nil];
+    return [NSMutableArray arrayWithObjects:line1, line2,nil];
 }
 @end
