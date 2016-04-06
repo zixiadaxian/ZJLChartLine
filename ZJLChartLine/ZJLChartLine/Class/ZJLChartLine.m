@@ -8,11 +8,12 @@
 
 #import "ZJLChartLine.h"
 #import "UIBezierPath+Granularity.h"
+
 static const CGFloat chart_X_Y_Label                = 50.f; //X Y  label高度
 static const CGFloat chartLine_To_Top_Span          = 30.f; // 距离顶部高度 右边
 static const CGFloat chartLine_To_Line_Span         = 70.0; // X 网格间距
 
-#define kRandomColor [UIColor colorWithRed:((arc4random() % 255 )/ 255) green:((arc4random() % 255) / 255) blue:((arc4random() % 255) / 255) alpha:1.00f]
+#define kRandomColor [UIColor colorWithRed:((arc4random() % 255 )/ 255.0) green:((arc4random() % 255) / 255.0) blue:((arc4random() % 255) / 255.0) alpha:1.00f]
 
 @interface ZJLChartLine ()
 
