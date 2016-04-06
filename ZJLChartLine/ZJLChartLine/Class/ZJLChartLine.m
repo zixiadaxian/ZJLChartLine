@@ -219,7 +219,7 @@ static const CGFloat chartLine_To_Line_Span         = 70.0; // X 网格间距
     
     UIView * view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 10)];
     view.center = point;
-    view.backgroundColor = [UIColor whiteColor];
+    view.backgroundColor = kRandomColor;
     view.layer.cornerRadius = 5.f;
     view.layer.masksToBounds = YES;
     [self.lineView addSubview:view];
