@@ -219,14 +219,14 @@ static const CGFloat chartLine_To_Line_Span         = 70.0; // X 网格间距
     
     UIView * view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 10)];
     view.center = point;
-    view.backgroundColor = kRandomColor;
+    view.backgroundColor = [UIColor lightGrayColor];
     view.layer.cornerRadius = 5.f;
     view.layer.masksToBounds = YES;
     [self.lineView addSubview:view];
     
     UILabel * label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 30, 20)];
     label.center = point;
-    label.textColor = [UIColor lightGrayColor];
+    label.textColor = [UIColor whiteColor];
     label.font = [UIFont systemFontOfSize:10.f];
     label.textAlignment = NSTextAlignmentCenter;
     label.text = text;
